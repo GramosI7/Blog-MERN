@@ -1,0 +1,27 @@
+.text__ellipsis{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+}
+
+li {
+ cursor: pointer;
+}
+
+.hover {
+  cursor: pointer;
+}
+
+.container__single-cour {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.container__single-cour__title {
+  margin-top: 10%;
+}
+
+.container__single-cour__written {
+  margin-bottom: 50px;
+}
