@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import moment from 'moment';
 const { Schema } = mongoose;
 
 const articleSchema = new Schema({
@@ -19,8 +20,8 @@ const articleSchema = new Schema({
     },
 
     date:{
-        type: Date,
-        default: Date.now
+        type: String,
+        default: moment().format("Do MMMM YYYY")
     },
     
     body: {
@@ -29,7 +30,7 @@ const articleSchema = new Schema({
 
     published: {
         type: Boolean,
-        default: true
+        required: true
     }
 
 })

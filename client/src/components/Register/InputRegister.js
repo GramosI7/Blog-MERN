@@ -9,15 +9,9 @@ const InputRegister = (props) => {
             <h1 className="text-center">Register</h1>
 
             <div className="form-group">
-                <label>First Name</label>
-                <input onChange={props.handleOnChange} name="firstName" type="text" className={classnames("form-control", {"is-invalid" : errors.firstName})} placeholder="Enter your First Name"/>
-                {errors.firstName && (<div className="invalid-feedback">{errors.firstName}</div>)}
-            </div>
-
-            <div className="form-group">
-                <label>Last Name</label>
-                <input onChange={props.handleOnChange} name="lastName" type="text"  className={classnames("form-control", {"is-invalid" : errors.lastName})} placeholder="Enter your Last Name"/>
-                {errors.lastName && (<div className="invalid-feedback">{errors.lastName}</div>)}
+                <label>Pseudo</label>
+                <input onChange={props.handleOnChange} name="pseudo" type="text"  className={classnames("form-control", {"is-invalid" : errors.pseudo})} placeholder="Enter your pseudo"/>
+                {errors.pseudo && (<div className="invalid-feedback">{errors.pseudo}</div>)}
             </div>
 
             <div className="form-group">

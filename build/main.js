@@ -139,12 +139,7 @@ var Schema = _mongoose2.default.Schema;
 
 var userSchema = new Schema({
 
-    firstName: {
-        type: String,
-        required: true
-    },
-
-    lastName: {
+    pseudo: {
         type: String,
         required: true
     },
@@ -171,7 +166,7 @@ var userSchema = new Schema({
 
 });
 
-exports.default = _mongoose2.default.model('user', userSchema);
+exports.default = _mongoose2.default.model('users', userSchema);
 
 /***/ }),
 /* 8 */
@@ -215,7 +210,7 @@ var _passport = __webpack_require__(2);
 
 var _passport2 = _interopRequireDefault(_passport);
 
-var _passportJwt = __webpack_require__(34);
+var _passportJwt = __webpack_require__(35);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -320,9 +315,9 @@ var _express2 = _interopRequireDefault(_express);
 
 var _article = __webpack_require__(14);
 
-var _user = __webpack_require__(21);
+var _user = __webpack_require__(22);
 
-var _profil = __webpack_require__(29);
+var _profil = __webpack_require__(30);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -403,7 +398,7 @@ var _article = __webpack_require__(19);
 
 var _article2 = _interopRequireDefault(_article);
 
-var _article3 = __webpack_require__(20);
+var _article3 = __webpack_require__(21);
 
 var _article4 = _interopRequireDefault(_article3);
 
@@ -433,32 +428,31 @@ exports.default = {
               return _context.abrupt("return", res.json(error));
 
             case 4:
-              console.log(req.user);
-
-              _context.next = 7;
+              _context.next = 6;
               return _article2.default.create({
                 title: req.body.title,
-                author: req.user.firstName,
-                body: req.body.body
+                author: req.user.pseudo,
+                body: req.body.body,
+                published: req.body.published === "true" ? false : true
               });
 
-            case 7:
+            case 6:
               article = _context.sent;
               return _context.abrupt("return", res.json(article));
 
-            case 11:
-              _context.prev = 11;
+            case 10:
+              _context.prev = 10;
               _context.t0 = _context["catch"](0);
 
               console.error(_context.t0);
               return _context.abrupt("return", res.status(500).send(_context.t0));
 
-            case 15:
+            case 14:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, _this, [[0, 11]]);
+      }, _callee, _this, [[0, 10]]);
     }))();
   },
   findAll: function findAll(req, res) {
@@ -1430,6 +1424,10 @@ var _mongoose = __webpack_require__(1);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
+var _moment = __webpack_require__(20);
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Schema = _mongoose2.default.Schema;
@@ -1453,8 +1451,8 @@ var articleSchema = new Schema({
     },
 
     date: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: (0, _moment2.default)().format("Do MMMM YYYY")
     },
 
     body: {
@@ -1463,7 +1461,7 @@ var articleSchema = new Schema({
 
     published: {
         type: Boolean,
-        default: true
+        required: true
     }
 
 });
@@ -1472,6 +1470,12 @@ exports.default = _mongoose2.default.model('Article', articleSchema);
 
 /***/ }),
 /* 20 */
+/***/ (function(module, exports) {
+
+module.exports = require("moment");
+
+/***/ }),
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1492,7 +1496,8 @@ exports.default = {
         var schema = _joi2.default.object().keys({
             title: _joi2.default.string().required(),
             // author:Joi.string().required(),
-            body: _joi2.default.string().required()
+            body: _joi2.default.string().required(),
+            published: _joi2.default.boolean().required()
         });
 
         var _Joi$validate = _joi2.default.validate(body, schema),
@@ -1507,7 +1512,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1517,7 +1522,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _user = __webpack_require__(22);
+var _user = __webpack_require__(23);
 
 Object.defineProperty(exports, 'userRouter', {
   enumerable: true,
@@ -1527,7 +1532,7 @@ Object.defineProperty(exports, 'userRouter', {
 });
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1542,7 +1547,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _user = __webpack_require__(23);
+var _user = __webpack_require__(24);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -1554,7 +1559,7 @@ userRouter.post('/register', _user2.default.signup);
 userRouter.post('/login', _user2.default.login);
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1568,7 +1573,7 @@ var _regenerator = __webpack_require__(3);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _user = __webpack_require__(24);
+var _user = __webpack_require__(25);
 
 var _user2 = _interopRequireDefault(_user);
 
@@ -1576,11 +1581,11 @@ var _user3 = __webpack_require__(7);
 
 var _user4 = _interopRequireDefault(_user3);
 
-var _jwt = __webpack_require__(26);
+var _jwt = __webpack_require__(27);
 
 var _jwt2 = _interopRequireDefault(_jwt);
 
-var _gravatar = __webpack_require__(28);
+var _gravatar = __webpack_require__(29);
 
 var _gravatar2 = _interopRequireDefault(_gravatar);
 
@@ -1632,8 +1637,7 @@ exports.default = {
                         case 13:
                             _context.next = 15;
                             return _user4.default.create({
-                                firstName: req.body.firstName,
-                                lastName: req.body.lastName,
+                                pseudo: req.body.pseudo,
                                 email: req.body.email,
                                 avatar: avatar,
                                 password: encryptedPass
@@ -1712,8 +1716,7 @@ exports.default = {
                         case 12:
                             token = _jwt2.default.issue({
                                 id: user._id,
-                                firstName: user.firstName,
-                                lastName: user.lastName,
+                                pseudo: user.pseudo,
                                 email: user.email,
                                 avatar: user.avatar
                             }, '1d');
@@ -1740,7 +1743,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1762,7 +1765,7 @@ var _isEmpty = __webpack_require__(6);
 
 var _isEmpty2 = _interopRequireDefault(_isEmpty);
 
-var _bcryptjs = __webpack_require__(25);
+var _bcryptjs = __webpack_require__(26);
 
 var _bcryptjs2 = _interopRequireDefault(_bcryptjs);
 
@@ -1779,23 +1782,16 @@ exports.default = {
     validateSignup: function validateSignup(body) {
         var errors = {};
 
-        body.firstName = !(0, _isEmpty2.default)(body.firstName) ? body.firstName : "";
-        body.lastName = !(0, _isEmpty2.default)(body.lastName) ? body.lastName : "";
+        body.pseudo = !(0, _isEmpty2.default)(body.pseudo) ? body.pseudo : "";
         body.email = !(0, _isEmpty2.default)(body.email) ? body.email : "";
         body.password = !(0, _isEmpty2.default)(body.password) ? body.password : "";
         body.password2 = !(0, _isEmpty2.default)(body.password2) ? body.password2 : "";
 
-        if (!_validator2.default.isLength(body.firstName, { min: 2, max: 30 })) {
-            errors.firstName = "Votre firstName doit contenir entre 2 et 30 caracteres.";
+        if (!_validator2.default.isLength(body.pseudo, { min: 2, max: 30 })) {
+            errors.pseudo = "Votre pseudo doit contenir entre 2 et 30 caracteres.";
         }
-        if (_validator2.default.isEmpty(body.firstName)) {
-            errors.firstName = "Un firstName est requis.";
-        }
-        if (!_validator2.default.isLength(body.lastName, { min: 2, max: 30 })) {
-            errors.lastName = "Votre lastname doit contenir entre 2 et 30 caracteres.";
-        }
-        if (_validator2.default.isEmpty(body.lastName)) {
-            errors.lastName = "Un lastname est requis.";
+        if (_validator2.default.isEmpty(body.pseudo)) {
+            errors.pseudo = "Un pseudo est requis.";
         }
         if (!_validator2.default.isEmail(body.email)) {
             errors.email = "L'email est invalide.";
@@ -1844,13 +1840,13 @@ exports.default = {
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("bcryptjs");
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1860,7 +1856,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _jsonwebtoken = __webpack_require__(27);
+var _jsonwebtoken = __webpack_require__(28);
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
@@ -1877,19 +1873,19 @@ exports.default = {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("jsonwebtoken");
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("gravatar");
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1899,7 +1895,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _profil = __webpack_require__(30);
+var _profil = __webpack_require__(31);
 
 Object.defineProperty(exports, 'profilRouter', {
   enumerable: true,
@@ -1909,7 +1905,7 @@ Object.defineProperty(exports, 'profilRouter', {
 });
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1924,7 +1920,7 @@ var _express = __webpack_require__(0);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _profil = __webpack_require__(31);
+var _profil = __webpack_require__(32);
 
 var _profil2 = _interopRequireDefault(_profil);
 
@@ -1936,12 +1932,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var profilRouter = exports.profilRouter = _express2.default.Router();
 
-profilRouter.get('/', _passport2.default.authenticate("jwt", { session: false }), _profil2.default.findOne);
+profilRouter.get('/me', _passport2.default.authenticate("jwt", { session: false }), _profil2.default.findOneMe);
+profilRouter.get('/handle/:handle', _passport2.default.authenticate("jwt", { session: false }), _profil2.default.findOneHandle);
 profilRouter.get('/all', _passport2.default.authenticate("jwt", { session: false }), _profil2.default.findAll);
 profilRouter.post('/', _passport2.default.authenticate("jwt", { session: false }), _profil2.default.create);
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1955,11 +1952,11 @@ var _regenerator = __webpack_require__(3);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _profil = __webpack_require__(32);
+var _profil = __webpack_require__(33);
 
 var _profil2 = _interopRequireDefault(_profil);
 
-var _profil3 = __webpack_require__(33);
+var _profil3 = __webpack_require__(34);
 
 var _profil4 = _interopRequireDefault(_profil3);
 
@@ -1968,7 +1965,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = {
-  findOne: function findOne(req, res) {
+  findOneMe: function findOneMe(req, res) {
     var _this = this;
 
     return _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
@@ -1979,7 +1976,7 @@ exports.default = {
             case 0:
               _context.prev = 0;
               _context.next = 3;
-              return _profil2.default.findOne({ user: req.user.id });
+              return _profil2.default.findOne({ user: req.user.id }).populate("user", ["lastName", "avatar"]);
 
             case 3:
               profil = _context.sent;
@@ -1989,7 +1986,7 @@ exports.default = {
                 break;
               }
 
-              return _context.abrupt("return", res.status(404).json({ err: 'could not find this a user' }));
+              return _context.abrupt("return", res.status(404).json({ err: 'You do not have to create your profile.' }));
 
             case 6:
               return _context.abrupt("return", res.json(profil));
@@ -2009,7 +2006,7 @@ exports.default = {
       }, _callee, _this, [[0, 9]]);
     }))();
   },
-  findAll: function findAll(req, res) {
+  findOneHandle: function findOneHandle(req, res) {
     var _this2 = this;
 
     return _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
@@ -2020,7 +2017,7 @@ exports.default = {
             case 0:
               _context2.prev = 0;
               _context2.next = 3;
-              return _profil2.default.find({}).populate('users', ['firstName', 'avatar']);
+              return _profil2.default.findOne({ handle: req.params.handle }).populate("user", ["pseudo", "avatar"]);
 
             case 3:
               profil = _context2.sent;
@@ -2050,31 +2047,72 @@ exports.default = {
       }, _callee2, _this2, [[0, 9]]);
     }))();
   },
-  create: function create(req, res) {
+  findAll: function findAll(req, res) {
     var _this3 = this;
 
     return _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-      var _ArticleService$valid, errors, isValid, profileFields;
-
+      var profil;
       return _regenerator2.default.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
               _context3.prev = 0;
-              _ArticleService$valid = _profil4.default.validateProfileInput(req.body), errors = _ArticleService$valid.errors, isValid = _ArticleService$valid.isValid;
+              _context3.next = 3;
+              return _profil2.default.find({}).populate('user', ['pseudo', 'avatar']);
 
-              if (isValid) {
-                _context3.next = 4;
+            case 3:
+              profil = _context3.sent;
+
+              if (profil) {
+                _context3.next = 6;
                 break;
               }
 
-              return _context3.abrupt("return", res.status(400).json(errors));
+              return _context3.abrupt("return", res.status(404).json({ err: 'could not find this a user' }));
+
+            case 6:
+              return _context3.abrupt("return", res.json(profil));
+
+            case 9:
+              _context3.prev = 9;
+              _context3.t0 = _context3["catch"](0);
+
+              console.error(_context3.t0);
+              return _context3.abrupt("return", res.status(500).send(_context3.t0));
+
+            case 13:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, _this3, [[0, 9]]);
+    }))();
+  },
+  create: function create(req, res) {
+    var _this4 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+      var _ArticleService$valid, errors, isValid, profileFields;
+
+      return _regenerator2.default.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.prev = 0;
+              _ArticleService$valid = _profil4.default.validateProfileInput(req.body), errors = _ArticleService$valid.errors, isValid = _ArticleService$valid.isValid;
+
+              if (isValid) {
+                _context4.next = 4;
+                break;
+              }
+
+              return _context4.abrupt("return", res.status(400).json(errors));
 
             case 4:
               profileFields = {};
 
               profileFields.user = req.user.id;
-              if (req.body.handle) profileFields.handle = req.body.handle;
+              profileFields.handle = req.user.firstName;
               if (req.body.company) profileFields.company = req.body.company;
               if (req.body.website) profileFields.website = req.body.website;
               if (req.body.location) profileFields.location = req.body.location;
@@ -2095,34 +2133,34 @@ exports.default = {
                       res.status(400).json(errors);
                     }
                     // Save Profil
-                    new _profil2.default(req.body).save().then(function (profil) {
+                    new _profil2.default(profileFields).save().then(function (profil) {
                       return res.json(profil);
                     });
                   });
                 }
               });
-              _context3.next = 19;
+              _context4.next = 19;
               break;
 
             case 15:
-              _context3.prev = 15;
-              _context3.t0 = _context3["catch"](0);
+              _context4.prev = 15;
+              _context4.t0 = _context4["catch"](0);
 
-              console.error(_context3.t0);
-              return _context3.abrupt("return", res.status(500).send(_context3.t0));
+              console.error(_context4.t0);
+              return _context4.abrupt("return", res.status(500).send(_context4.t0));
 
             case 19:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
         }
-      }, _callee3, _this3, [[0, 15]]);
+      }, _callee4, _this4, [[0, 15]]);
     }))();
   }
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2176,7 +2214,7 @@ var profilSchema = new Schema({
 exports.default = _mongoose2.default.model('Profil', profilSchema);
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2200,15 +2238,7 @@ exports.default = {
     validateProfileInput: function validateProfileInput(data) {
         var errors = {};
 
-        data.handle = !(0, _isEmpty2.default)(data.handle) ? data.handle : '';
         data.status = !(0, _isEmpty2.default)(data.status) ? data.status : '';
-
-        if (!_validator2.default.isLength(data.handle, {
-            min: 2,
-            max: 40
-        })) {
-            errors.handle = 'Handle needs to between 2 and 4 characters';
-        }
 
         if (_validator2.default.isEmpty(data.company)) {
             errors.company = 'Profile company is required';
@@ -2233,7 +2263,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2248,7 +2278,7 @@ var _passport = __webpack_require__(2);
 
 var _passport2 = _interopRequireDefault(_passport);
 
-var _passportJwt = __webpack_require__(35);
+var _passportJwt = __webpack_require__(36);
 
 var _passportJwt2 = _interopRequireDefault(_passportJwt);
 
@@ -2279,7 +2309,7 @@ var configJWTStrategy = exports.configJWTStrategy = function configJWTStrategy()
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = require("passport-jwt");

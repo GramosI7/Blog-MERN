@@ -7,8 +7,7 @@ import {withRouter} from "react-router-dom";
 class Register extends Component {
 
   state = {
-    firstName: "",
-    lastName: "",
+    pseudo: "",
     email: "",
     password: "",
     password2: "",
@@ -21,10 +20,9 @@ handleOnChange = (e) => {
 
 submitRegister = (e) => {
     e.preventDefault();
-    const { firstName, lastName, email, password, password2} = this.state;
+    const { pseudo, email, password, password2} = this.state;
     const register = {
-        firstName: firstName,
-        lastName: lastName,
+        pseudo: pseudo,
         email: email,
         password: password,
         password2: password2

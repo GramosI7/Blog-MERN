@@ -24,8 +24,7 @@ export default {
                 return res.json({email : "L'email existe deja"})
             } else {
                 const userRegister = await User.create({
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
+                    pseudo: req.body.pseudo,
                     email: req.body.email,
                     avatar: avatar,
                     password: encryptedPass
@@ -58,8 +57,7 @@ export default {
             }
             const token = jwt.issue({ 
                 id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                pseudo: user.pseudo,
                 email: user.email,
                 avatar: user.avatar
             }, '1d')

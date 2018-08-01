@@ -18,13 +18,6 @@ const AddInfo = (props) => {
                             className="form-control"
                             />
                             <br/>
-                            {/* <input
-                            name="author"
-                            type="text"
-                            placeholder="Author"
-                            onChange={props.onHandleChangeTitle}
-                            className="form-control"
-                            /> */}
                         </div>
                         <div className="form-group">
                             <ReactQuill
@@ -35,6 +28,12 @@ const AddInfo = (props) => {
                             onChange={props.onHandleChange}
                             />
                         </div>
+
+                        <div className="form-check">
+                            <input className="form-check-input" value={props.check} onChange={props.checkbox} type="checkbox"/> 
+                            <label className="form-check-label">Mettre cet article dans vos brouillons //Ne Fonctionne pas encore//</label> 
+                        </div>
+                        <br/>
                         <button type="submit" className="btn btn-primary">Post</button>
                     </form>
                 <br />

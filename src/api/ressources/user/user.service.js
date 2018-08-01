@@ -15,23 +15,16 @@ export default {
     validateSignup(body) {
         let errors = {};
 
-        body.firstName = !isEmpty(body.firstName) ? body.firstName : "";
-        body.lastName = !isEmpty(body.lastName) ? body.lastName : "";
+        body.pseudo = !isEmpty(body.pseudo) ? body.pseudo : "";
         body.email = !isEmpty(body.email) ? body.email : "";
         body.password = !isEmpty(body.password) ? body.password : "";
         body.password2 = !isEmpty(body.password2) ? body.password2 : "";
     
-        if(!validator.isLength(body.firstName, { min : 2, max : 30 })){
-            errors.firstName = "Votre firstName doit contenir entre 2 et 30 caracteres.";
+        if(!validator.isLength(body.pseudo, { min : 2, max : 30 })){
+            errors.pseudo = "Votre pseudo doit contenir entre 2 et 30 caracteres.";
         }
-        if(validator.isEmpty(body.firstName)) {
-            errors.firstName = "Un firstName est requis.";
-        }
-        if(!validator.isLength(body.lastName, { min : 2, max : 30 })){
-            errors.lastName = "Votre lastname doit contenir entre 2 et 30 caracteres.";
-        }
-        if(validator.isEmpty(body.lastName)) {
-            errors.lastName = "Un lastname est requis.";
+        if(validator.isEmpty(body.pseudo)) {
+            errors.pseudo = "Un pseudo est requis.";
         }
         if(!validator.isEmail(body.email)) {
             errors.email = "L'email est invalide.";

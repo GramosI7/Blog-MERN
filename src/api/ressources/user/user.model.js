@@ -3,12 +3,7 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
 
-    firstName: {
-        type: String,
-        required: true
-    },
-
-    lastName:{
+    pseudo:{
         type:String,
         required: true
     },
@@ -35,4 +30,4 @@ const userSchema = new Schema({
 
 })
 
-export default mongoose.model('user', userSchema)
+export default mongoose.model('users', userSchema )

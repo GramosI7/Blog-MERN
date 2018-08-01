@@ -9,7 +9,7 @@ import axios from "axios";
 export class Articles extends Component {
 
   state = {
-    articles : ""
+    articles : []
 }
 
 componentDidMount() {
@@ -24,11 +24,9 @@ getArticles = () => {
 
 articlesMapRender = () => {
   const {articles} = this.state;
-  if(articles) {
       return articles.slice(0,3).map((article, index) => {
           return <ListMiddle key={index} article={article} />
       })
-  }   
 }
 
   render() {

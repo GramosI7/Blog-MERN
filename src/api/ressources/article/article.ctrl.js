@@ -8,12 +8,11 @@ export default {
             if (error && error.details) {
                 return res.json(error);
             }
-            console.log(req.user);
-
             const article = await Article.create({
               title : req.body.title,
-              author: req.user.firstName,
-              body : req.body.body
+              author: req.user.pseudo,
+              body : req.body.body,
+              published: req.body.published === "true" ? false : true
             })
             return res.json(article);
         } catch (err) {

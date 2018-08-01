@@ -3,16 +3,25 @@ import TextInformation from '../components/SingleArticle/TextInformation';
 import EditBtn from '../components/SingleArticle/EditBtn';
 import DeleteBtn from '../components/SingleArticle/DeleteBtn';
 import axios from "axios";
+import {connect} from "react-redux";
+
 
 export class SingleArticle extends Component {
 
     state = {
-        article : ""
+        article : "",
+        userName: {}
     }
 
     componentDidMount() {
         this.getArticles();
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.auth) {
+            this.setState({userName: nextProps.auth.user.firstName})
+        }
+      }
 
     getArticles = () => {
         const {id} = this.props.match.params;
@@ -30,15 +39,25 @@ export class SingleArticle extends Component {
 
     render() {
         const {id} = this.props.match.params;
-        return (
-            <div className="container__single-cour">
-                <TextInformation article={this.state.article} />
+        const hisArticles = (
+            <div>
                 <EditBtn id={id} />
                 &nbsp;
                 <DeleteBtn deleteArticle={this.deleteArticle}/>
+            </div>
+            
+        )
+        return (
+            <div className="container__single-cour">
+                <TextInformation article={this.state.article} />
+                {this.props.auth.user.pseudo === this.state.article.author ? hisArticles : null}
             </div>
         )
     }
 }
 
-export default SingleArticle
+const mapStateToProps = (state) => ({
+    auth: state.auth
+})
+
+export default connect(mapStateToProps, {})(SingleArticle);

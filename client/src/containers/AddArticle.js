@@ -7,8 +7,8 @@ class AddArticle extends Component {
     super(props);
     this.state = {
       title: '',
-      // author: "",
-      body: ''
+      body: '',
+      check: "false"
     };
   }
 
@@ -16,8 +16,8 @@ class AddArticle extends Component {
     e.preventDefault();
     const newCours = {
         title : this.state.title,
-        // author: this.state.author,
         body: this.state.body,
+        published: this.state.check
       }
       
     axios.post("/api/article", newCours )
@@ -34,9 +34,17 @@ class AddArticle extends Component {
     console.log(this.state.body);
   }
 
+  checkbox = (e) => {
+    if(e.target.value === "false") {
+      this.setState({check: "true" }, () => console.log(this.state.check))
+    }
+  }
+
   render() {
     return (
-      <AddInfo postData={this.postData} onHandleChangeTitle={this.onHandleChangeTitle} onHandleChange={this.onHandleChange} />
+      <div>
+      <AddInfo check={this.state.check} checkbox={this.checkbox} postData={this.postData} onHandleChangeTitle={this.onHandleChangeTitle} onHandleChange={this.onHandleChange} />
+      </div>  
     );
   }
 }
